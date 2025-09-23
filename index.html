@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            opacity: 0.8;
+        }
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #d63384;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .heart {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 30px auto;
+        }
+
+        .puzzle-piece {
+            background: #fff;
+            border: 2px solid #ff8e8e;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .puzzle-piece:hover {
+            background: #ffe8e8;
+            transform: scale(1.05);
+        }
+
+        .puzzle-piece.revealed {
+            background: #ff8e8e;
+            color: white;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.6);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .final-message {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .big-question {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #d63384;
+            margin: 30px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .response-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .no-btn {
+            background: linear-gradient(45deg, #6c757d, #adb5bd);
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .flying {
+            animation: flyAway 0.5s ease-out forwards;
+        }
+
+        @keyframes flyAway {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(200px, -100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <!-- Step 1: Welcome -->
+        <div class="step active" id="step1">
+            <h1>Hey Beautiful SASA <span class="heart">💕</span></h1>
+            <p>I've been thinking about us lately, and there's something special I want to share with you. This little adventure is just for you, so take your time and enjoy every moment.</p>
+            <p>Ready to discover what's in my heart?</p>
+            <button class="btn" onclick="nextStep(2)">Let's Begin! ✨</button>
+        </div>
+
+        <!-- Step 2: Interactive Puzzle -->
+        <div class="step" id="step2">
+            <h2>Solve My Heart Puzzle <span class="heart">💖</span></h2>
+            <p>Click on each piece to reveal a word that describes how you make me feel:</p>
+            
+            <div class="puzzle-container">
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Happy')">?</div>
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Loved')">?</div>
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Complete')">?</div>
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Grateful')">?</div>
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Excited')">?</div>
+                <div class="puzzle-piece" onclick="revealPiece(this, 'Hopeful')">?</div>
+            </div>
+            
+            <button class="btn" id="continueBtn" style="display:none;" onclick="nextStep(3)">Continue the Journey 💫</button>
+        </div>
+
+        <!-- Step 3: The Big Question -->
+        <div class="step" id="step3">
+            <div class="final-message">
+                <h2>My Dearest SASA <span class="heart">💝</span></h2>
+                <p>From the very first day we met, I knew there was something magical about you. Do you remember that moment? The way you smiled, the way you laughed - it felt like the whole world suddenly made sense. I never believed in love at first sight until I saw you, and in that instant, my heart whispered "she's the one."</p>
+                
+                <p>As days turned into weeks, and weeks into months, every conversation we shared became a treasure I held close to my heart. Your kindness touched my soul, your intelligence amazed me, and your beautiful spirit made me want to be a better person. You didn't just enter my life - you transformed it completely.</p>
+                
+                <p>I remember all our little moments together - the late-night talks that made me lose track of time, the way you get excited about the things you love, how you make even the ordinary days feel extraordinary. Every shared laugh, every comfortable silence, every time you looked at me with those beautiful eyes - they all became pieces of a love story I never want to end.</p>
+                
+                <p>Through every joy and every challenge, you've been my constant source of happiness and strength. You've seen me at my best and my worst, and somehow you still choose to stay. You've taught me what it means to love unconditionally, to trust completely, and to dream bigger than I ever thought possible.</p>
+                
+                <p>Today, as I look back on our journey from that very first day to this moment, I realize that every step, every memory, every heartbeat has been leading me to this question. You are my best friend, my greatest love, and my brightest hope for the future.</p>
+                
+                <p>SASA, you are the missing piece I never knew I was looking for. You complete me in ways I didn't know were possible, and I want to spend the rest of my life showing you just how much you mean to me.</p>
+                
+                <div class="big-question">
+                    SASA, will you be my girlfriend? <span class="heart">💕</span>
+                </div>
+                
+                <div class="response-buttons">
+                    <button class="btn yes-btn" onclick="celebrate()">Yes! 💖</button>
+                    <button class="btn yes-btn" onclick="celebrate()">Absolutely Yes! 💕</button>
+                </div>
+                
+                <div style="margin-top: 20px; position: relative; height: 60px;">
+                    <button class="btn no-btn" id="flyingBtn" onmouseenter="flyAway()" onclick="handleFlyingClick()">I need time 💭</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Celebration -->
+        <div class="step" id="step4">
+            <h1>YES! <span class="heart">🎉💕🎉</span></h1>
+            <div class="final-message">
+                <p style="font-size: 1.4rem; color: #d63384;">You just made me the happiest person in the world! I can't wait to start this beautiful journey together.</p>
+                <p>Here's to us, to love, and to all the amazing adventures ahead! <span class="heart">💖</span></p>
+            </div>
+        </div>
+
+        <!-- Step 5: Gentle Response -->
+        <div class="step" id="step5">
+            <h2>That's Okay <span class="heart">💙</span></h2>
+            <div class="final-message">
+                <p>I understand, and I respect your feelings. Take all the time you need. What matters most to me is that you're comfortable and happy.</p>
+                <p>Our friendship means the world to me, and that will never change. <span class="heart">💕</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let revealedPieces = 0;
+        let flyingClicks = 0;
+        
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step' + stepNumber).classList.add('active');
+        }
+        
+        function revealPiece(element, word) {
+            if (!element.classList.contains('revealed')) {
+                element.textContent = word;
+                element.classList.add('revealed');
+                revealedPieces++;
+                
+                if (revealedPieces === 6) {
+                    setTimeout(() => {
+                        document.getElementById('continueBtn').style.display = 'inline-block';
+                    }, 500);
+                }
+            }
+        }
+        
+        function celebrate() {
+            nextStep(4);
+            createConfetti();
+            setTimeout(createConfetti, 1000);
+            setTimeout(createConfetti, 2000);
+        }
+        
+        function handleNo() {
+            nextStep(5);
+        }
+        
+        function flyAway() {
+            const btn = document.getElementById('flyingBtn');
+            btn.classList.add('flying');
+            
+            setTimeout(() => {
+                btn.classList.remove('flying');
+                btn.style.left = Math.random() * 300 + 'px';
+                btn.style.top = Math.random() * 100 + 'px';
+            }, 500);
+        }
+        
+        function handleFlyingClick() {
+            flyingClicks++;
+            if (flyingClicks >= 10) {
+                const btn = document.getElementById('flyingBtn');
+                btn.textContent = 'Fine... Yes! 💖';
+                btn.className = 'btn yes-btn';
+                btn.onmouseenter = null;
+                btn.onclick = celebrate;
+            }
+        }
+        
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            document.body.appendChild(confetti);
+            
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+            
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                confetti.appendChild(piece);
+            }
+            
+            setTimeout(() => {
+                document.body.removeChild(confetti);
+            }, 3000);
+        }
+        
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            document.getElementById('floatingHearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+        
+        // Create floating hearts periodically
+        setInterval(createFloatingHeart, 2000);
+        
+        // Create initial hearts
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createFloatingHeart, i * 400);
+        }
+    </script>
+    
+    <!-- Background Music Player -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const audio = document.getElementById('bgMusic');
+        audio.volume = 0.3;
+        
+        // Try to play immediately
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => {
+                // Auto-play was prevented, play on user interaction
+                const startMusic = () => {
+                    audio.play();
+                    document.removeEventListener('click', startMusic);
+                    document.removeEventListener('touchstart', startMusic);
+                };
+                document.addEventListener('click', startMusic);
+                document.addEventListener('touchstart', startMusic);
+            });
+        }
+    </script>
+</body>
+</html>
